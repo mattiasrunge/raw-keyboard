@@ -18,19 +18,24 @@ public:
     void Execute(const NanAsyncProgressWorker::ExecutionProgress& callbackEvent) {
         input_event callbackEventData[64];
         int size = sizeof(input_event);
-
+        key* ed = NULL;
         int keyboard = open(deviceName.c_str(), O_RDONLY);
 
         if (keyboard == -1) {
             return;
         }
 
+        ed = new key;
+        ed->value = 10;
+        callbackEvent.Send((const char*)(ed), sizeof(key));
+
+
         while (1) {
             int bytesRead = read(keyboard, callbackEventData, size * 64);
 
             for (int count = 0; count < (bytesRead / size); count++) {
                 if (EV_KEY == callbackEventData[count].type) {
-                    key* ed = new key;
+                    ed = new key;
                     ed->code = callbackEventData[count].code;
                     ed->value = callbackEventData[count].value;
 
