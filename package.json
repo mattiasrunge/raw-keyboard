@@ -1,6 +1,6 @@
 {
   "name": "raw-keyboard",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Capture raw keyboard events in Linux",
   "main": "lib/index.js",
   "scripts": {

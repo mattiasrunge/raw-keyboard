@@ -66,26 +66,28 @@ private:
     std::string deviceName;
 };
 
+#endif
+
 NAN_METHOD(DoProgress) {
     NanScope();
 
+#ifdef LINUX
     NanCallback *callbackEvent = new NanCallback(args[1].As<v8::Function>());
     NanCallback *callbackComplete = new NanCallback(args[2].As<v8::Function>());
     v8::String::Utf8Value str(args[0]->ToString());
 
     NanAsyncQueueWorker(new KeyboardWorker(callbackComplete, callbackEvent, *str));
+#else
+    printf("raw-keyboard is not supported on this platform!\n");
+#endif
 
     NanReturnUndefined();
 }
 
-#endif
+
 
 void Init(v8::Handle<v8::Object> exports) {
-#ifdef LINUX
     exports->Set(NanNew<v8::String>("obj"), NanNew<v8::FunctionTemplate>(DoProgress)->GetFunction());
-#else
-    printf("raw-keyboard is not supported on this platform!");
-#endif
 }
 
 NODE_MODULE(asyncprogressworker, Init)
