@@ -1,7 +1,7 @@
 #include <nan.h>
 #include <stdio.h>
 
-#ifdef LINUX
+#ifdef __linux__
 
 #include <unistd.h>
 #include <string>
@@ -71,7 +71,7 @@ private:
 NAN_METHOD(DoProgress) {
     NanScope();
 
-#ifdef LINUX
+#ifdef __linux__
     NanCallback *callbackEvent = new NanCallback(args[1].As<v8::Function>());
     NanCallback *callbackComplete = new NanCallback(args[2].As<v8::Function>());
     v8::String::Utf8Value str(args[0]->ToString());
