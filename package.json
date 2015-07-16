@@ -24,5 +24,6 @@
   "homepage": "https://github.com/mattiasrunge/raw-keyboard#readme",
   "dependencies": {
     "nan": "^1.8.4"
-  }
+  },
+  "os": [ "linux" ]
 }

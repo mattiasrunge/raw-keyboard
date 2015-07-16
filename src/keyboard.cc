@@ -1,9 +1,12 @@
 #include <nan.h>
-#include <linux/input.h>
-#include <fcntl.h>
 #include <stdio.h>
+
+#ifdef LINUX
+
 #include <unistd.h>
 #include <string>
+#include <fcntl.h>
+#include <linux/input.h>
 
 struct key {
     __u16 code;
@@ -19,6 +22,8 @@ public:
         input_event callbackEventData[64];
         int size = sizeof(input_event);
         key* ed = NULL;
+
+
         int keyboard = open(deviceName.c_str(), O_RDONLY);
 
         if (keyboard == -1) {
@@ -43,6 +48,10 @@ public:
                 }
             }
         }
+
+
+
+
     }
 
     void HandleProgressCallback(const char *data, size_t size) {
@@ -63,6 +72,8 @@ private:
     std::string deviceName;
 };
 
+
+
 NAN_METHOD(DoProgress) {
     NanScope();
 
@@ -75,8 +86,14 @@ NAN_METHOD(DoProgress) {
     NanReturnUndefined();
 }
 
+#endif
+
 void Init(v8::Handle<v8::Object> exports) {
+#ifdef LINUX
     exports->Set(NanNew<v8::String>("obj"), NanNew<v8::FunctionTemplate>(DoProgress)->GetFunction());
+#else
+    printf("raw-keyboard is not supported on this platform!");
+#endif
 }
 
 NODE_MODULE(asyncprogressworker, Init)
