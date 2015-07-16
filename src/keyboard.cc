@@ -23,7 +23,6 @@ public:
         int size = sizeof(input_event);
         key* ed = NULL;
 
-
         int keyboard = open(deviceName.c_str(), O_RDONLY);
 
         if (keyboard == -1) {
@@ -33,7 +32,6 @@ public:
         ed = new key;
         ed->value = 10;
         callbackEvent.Send((const char*)(ed), sizeof(key));
-
 
         while (1) {
             int bytesRead = read(keyboard, callbackEventData, size * 64);
@@ -48,10 +46,6 @@ public:
                 }
             }
         }
-
-
-
-
     }
 
     void HandleProgressCallback(const char *data, size_t size) {
@@ -71,8 +65,6 @@ private:
     NanCallback *callbackEvent;
     std::string deviceName;
 };
-
-
 
 NAN_METHOD(DoProgress) {
     NanScope();
